@@ -1,0 +1,39 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: #111111;
+}
+
+.screen {
+  display: flex;
+  gap: 28px;
+}
+
+.digit {
+  display: flex;
+  flex-wrap: wrap;
+  width: 122px;
+  gap: 8px;
+}
+
+.cell {
+  width: 35px;
+  height: 35px;
+  background: currentColor;
+}
+
+.hidden {
+  opacity: 0;
+}
+
+@media (max-width: 767px) {
+  .screen {
+    flex-direction: column;
+  }
+}
