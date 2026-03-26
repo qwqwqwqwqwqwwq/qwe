@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Калькулятор</title>
+<style>
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #eef2f7 0%, #dfe8f5 100%);
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+.calculator {
+    width: 340px;
+    background: #d4e4ff;
+    border-radius: 18px;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
+    padding: 20px;
+}
+.title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #26416b;
+    margin-bottom: 14px;
+    text-align: center;
+}
+.display-wrap {
+    background: #f8fbff;
+    border: 2px solid #b8cae8;
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+}
+.display {
+    width: 100%;
+    border: none;
+    background: transparent;
+    text-align: right;
+    font-size: 32px;
+    font-weight: 700;
+    color: #1f2f47;
+}
+.display:focus { outline: none; }
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+button {
+    border: none;
+    border-radius: 12px;
+    min-height: 58px;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+    color: #fff;
+    background: #5b7edc;
+}
+button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+button:active {
+    transform: scale(0.98);
+}
+button.operation { background: #2c4f9c; }
+button.control { background: #d9534f; }
+button.equal { background: #1f9d66; }
+button.zero { grid-column: span 2; }
+@media (max-width: 420px) {
+    .calculator {
+        width: 94vw;
+        padding: 16px;
+    }
+    button {
+        min-height: 54px;
+        font-size: 18px;
+    }
+    .display {
+        font-size: 28px;
+    }
+}
+</style>
+</head>
+<body>
+<div class="calculator">
+    <div class="title">Калькулятор</div>
+    <div class="display-wrap">
+        <input type="text" class="display" id="display" value="0" readonly>
+    </div>
+
+    <div class="buttons">
+        <button class="control" onclick="clearAll()">C</button>
+        <button class="control" onclick="clearEntry()">CE</button>
+        <button class="control" onclick="backspace()">←</button>
+        <button class="operation" onclick="chooseOperation('÷')">÷</button>
+
+        <button class="operation" onclick="applyUnary('percent')">%</button>
+        <button class="operation" onclick="applyUnary('sqrt')">√</button>
+        <button class="operation" onclick="applyUnary('reciprocal')">1/x</button>
+        <button class="operation" onclick="chooseOperation('×')">×</button>
+
+        <button onclick="appendDigit('7')">7</button>
+        <button onclick="appendDigit('8')">8</button>
+        <button onclick="appendDigit('9')">9</button>
+        <button class="operation" onclick="chooseOperation('-')">−</button>
+
+        <button onclick="appendDigit('4')">4</button>
+        <button onclick="appendDigit('5')">5</button>
+        <button onclick="appendDigit('6')">6</button>
+        <button class="operation" onclick="chooseOperation('+')">+</button>
+
+        <button onclick="appendDigit('1')">1</button>
+        <button onclick="appendDigit('2')">2</button>
+        <button onclick="appendDigit('3')">3</button>
+        <button class="equal" onclick="calculate()">=</button>
+
+        <button onclick="toggleSign()">±</button>
+        <button class="zero" onclick="appendDigit('0')">0</button>
+        <button onclick="appendDigit('.')">.</button>
+    </div>
+</div>
+
+<script>
+const display = document.getElementById('display');
+let currentValue = '0';
+let previousValue = null;
+let currentOperation = null;
+let shouldResetDisplay = false;
+
+function updateDisplay() {
+    display.value = currentValue;
+}
+
+function appendDigit(digit) {
+    if (shouldResetDisplay) {
+        currentValue = '0';
+        shouldResetDisplay = false;
+    }
+
+    if (digit === '.') {
+        if (currentValue.includes('.')) return;
+        currentValue += '.';
+    } else {
+        currentValue = currentValue === '0' ? digit : currentValue + digit;
+    }
+
+    updateDisplay();
+}
+
+function clearAll() {
+    currentValue = '0';
+    previousValue = null;
+    currentOperation = null;
+    shouldResetDisplay = false;
+    updateDisplay();
+}
+
+function clearEntry() {
+    currentValue = '0';
+    updateDisplay();
+}
+
+function backspace() {
+    if (shouldResetDisplay) {
+        currentValue = '0';
+        shouldResetDisplay = false;
+    } else {
+        currentValue = currentValue.length > 1 ? currentValue.slice(0, -1) : '0';
+        if (currentValue === '-' || currentValue === '-0') currentValue = '0';
+    }
+    updateDisplay();
+}
+
+function chooseOperation(operation) {
+    if (currentOperation && !shouldResetDisplay) {
+        calculate();
+    }
+
+    previousValue = parseFloat(currentValue);
+    currentOperation = operation;
+    shouldResetDisplay = true;
+    updateDisplay();
+}
+
+function performBinary(a, b, operation) {
+    switch (operation) {
+        case '+': return a + b;
+        case '-': return a - b;
+        case '×': return a * b;
+        case '÷':
+            if (b === 0) throw new Error('Деление на ноль невозможно.');
+            return a / b;
+        default: return b;
+    }
+}
+
+function formatNumber(value) {
+    const rounded = Math.round((value + Number.EPSILON) * 100000000) / 100000000;
+    return Number.isInteger(rounded) ? String(rounded) : String(rounded);
+}
+
+function calculate() {
+    if (previousValue === null || !currentOperation) return;
+
+    const current = parseFloat(currentValue);
+
+    try {
+        const result = performBinary(previousValue, current, currentOperation);
+        currentValue = formatNumber(result);
+        previousValue = null;
+        currentOperation = null;
+        shouldResetDisplay = true;
+        updateDisplay();
+    } catch (error) {
+        alert(error.message);
+        clearAll();
+    }
+}
+
+function toggleSign() {
+    if (currentValue === '0') return;
+    currentValue = String(parseFloat(currentValue) * -1);
+    updateDisplay();
+}
+
+function applyUnary(type) {
+    const value = parseFloat(currentValue);
+    try {
+        let result = value;
+        switch (type) {
+            case 'percent':
+                result = previousValue !== null ? previousValue * value / 100 : value / 100;
+                break;
+            case 'sqrt':
+                if (value < 0) throw new Error('Нельзя извлечь корень из отрицательного числа.');
+                result = Math.sqrt(value);
+                break;
+            case 'reciprocal':
+                if (value === 0) throw new Error('Деление на ноль невозможно.');
+                result = 1 / value;
+                break;
+        }
+        currentValue = formatNumber(result);
+        updateDisplay();
+    } catch (error) {
+        alert(error.message);
+        clearEntry();
+    }
+}
+
+updateDisplay();
+</script>
+</body>
+</html>
