@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab6 — Добавление товара в каталог</title>
+<style>
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #eef4ff, #f8fbff);
+    color: #1f2d3d;
+}
+.container {
+    max-width: 900px;
+    margin: 32px auto;
+    padding: 0 16px;
+}
+.form-card {
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(31, 45, 61, 0.12);
+    padding: 28px;
+}
+h1 {
+    text-align: center;
+    margin: 0 0 24px;
+    color: #1f4e79;
+}
+.section {
+    margin-bottom: 24px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e4ecf5;
+}
+.section:last-of-type {
+    border-bottom: none;
+}
+h2 {
+    margin: 0 0 16px;
+    font-size: 20px;
+    color: #24486e;
+}
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 18px;
+}
+.form-group.full {
+    grid-column: 1 / -1;
+}
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 700;
+}
+input, select, textarea {
+    width: 100%;
+    border: 2px solid #cad6e2;
+    border-radius: 10px;
+    padding: 11px 12px;
+    font-size: 15px;
+    transition: border-color 0.25s, box-shadow 0.25s, background-color 0.25s;
+    background: #fff;
+}
+textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.18);
+}
+input[type="range"] {
+    padding: 0;
+}
+.checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 10px;
+}
+.checkbox-row input[type="checkbox"] {
+    width: auto;
+    margin-top: 3px;
+}
+.actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+}
+button {
+    flex: 1;
+    border: none;
+    border-radius: 10px;
+    padding: 13px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+}
+button:hover {
+    transform: translateY(-1px);
+}
+button[type="submit"] {
+    background: #1f4e79;
+    color: #fff;
+}
+button[type="reset"] {
+    background: #e8eef5;
+    color: #24486e;
+}
+.range-display {
+    margin-top: 8px;
+    font-weight: 700;
+    color: #1f4e79;
+}
+.error {
+    color: #c0392b;
+    font-size: 13px;
+    margin-top: 6px;
+    min-height: 16px;
+}
+.invalid {
+    border-color: #e74c3c !important;
+    background: #fff8f7;
+}
+.result-card {
+    margin-top: 24px;
+    background: #eef9f0;
+    border: 1px solid #b8ddbe;
+    border-radius: 14px;
+    padding: 20px;
+}
+.result-card h3 {
+    margin-top: 0;
+    color: #256c2f;
+}
+.result-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 18px;
+}
+.result-item {
+    background: rgba(255,255,255,0.7);
+    border-radius: 10px;
+    padding: 10px 12px;
+}
+.result-item.full {
+    grid-column: 1 / -1;
+}
+small.hint {
+    display: block;
+    margin-top: 4px;
+    color: #607080;
+}
+@media (max-width: 640px) {
+    .form-card {
+        padding: 18px;
+    }
+    .grid, .result-grid {
+        grid-template-columns: 1fr;
+    }
+    label {
+        display: none;
+    }
+    input::placeholder, textarea::placeholder {
+        font-weight: 600;
+    }
+    .actions {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="form-card">
+        <h1>Добавление товара в каталог</h1>
+        <form id="catalogForm" novalidate>
+            <div class="section">
+                <h2>Основная информация</h2>
+                <div class="grid">
+                    <div class="form-group">
+                        <label for="productName">Название товара</label>
+                        <input type="text" id="productName" placeholder="Название товара">
+                        <div class="error" id="productNameError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Категория</label>
+                        <select id="category">
+                            <option value="">Выберите категорию</option>
+                            <option>Смартфоны</option>
+                            <option>Ноутбуки</option>
+                            <option>Наушники</option>
+                            <option>Аксессуары</option>
+                            <option>Умный дом</option>
+                        </select>
+                        <div class="error" id="categoryError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Цена, ₽</label>
+                        <input type="number" id="price" placeholder="Цена">
+                        <div class="error" id="priceError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Количество на складе</label>
+                        <input type="number" id="quantity" placeholder="Количество">
+                        <div class="error" id="quantityError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sku">Артикул</label>
+                        <input type="text" id="sku" placeholder="Например: CAT-12345">
+                        <div class="error" id="skuError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="dateAdded">Дата добавления</label>
+                        <input type="date" id="dateAdded">
+                        <div class="error" id="dateAddedError"></div>
+                    </div>
+                    <div class="form-group full">
+                        <label for="description">Описание</label>
+                        <textarea id="description" placeholder="Краткое описание товара"></textarea>
+                        <div class="error" id="descriptionError"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Дополнительные параметры</h2>
+                <div class="grid">
+                    <div class="form-group">
+                        <label for="brand">Бренд</label>
+                        <input type="text" id="brand" placeholder="Бренд">
+                        <div class="error" id="brandError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email менеджера</label>
+                        <input type="email" id="email" placeholder="Email менеджера">
+                        <div class="error" id="emailError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Контактный телефон</label>
+                        <input type="tel" id="phone" placeholder="Телефон">
+                        <div class="error" id="phoneError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="discount">Скидка, %</label>
+                        <input type="range" id="discount" min="0" max="90" value="10">
+                        <div class="range-display" id="discountValue">10%</div>
+                        <div class="error" id="discountError"></div>
+                    </div>
+                    <div class="form-group full">
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="inStock">
+                            <label for="inStock">Товар доступен для продажи</label>
+                        </div>
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="agreement">
+                            <label for="agreement">Подтверждаю корректность введённых данных</label>
+                        </div>
+                        <div class="error" id="agreementError"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button type="submit">Добавить товар</button>
+                <button type="reset">Очистить форму</button>
+            </div>
+        </form>
+
+        <div id="resultContainer"></div>
+    </div>
+</div>
+
+<script>
+const form = document.getElementById('catalogForm');
+const discount = document.getElementById('discount');
+const discountValue = document.getElementById('discountValue');
+const resultContainer = document.getElementById('resultContainer');
+
+discountValue.textContent = discount.value + '%';
+discount.addEventListener('input', function () {
+    discountValue.textContent = this.value + '%';
+});
+
+const fields = [
+    'productName','category','price','quantity','sku','dateAdded','description',
+    'brand','email','phone','agreement'
+];
+
+function clearErrors() {
+    document.querySelectorAll('.error').forEach(el => el.textContent = '');
+    form.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
+}
+
+function setError(id, message) {
+    const input = document.getElementById(id);
+    const error = document.getElementById(id + 'Error');
+    if (input) input.classList.add('invalid');
+    if (error) error.textContent = message;
+}
+
+function validateEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function validatePhone(value) {
+    return /^\+?[\d\s()-]{10,18}$/.test(value);
+}
+
+function formatDate(dateString) {
+    const parts = dateString.split('-');
+    return parts.length === 3 ? `${parts[2]}.${parts[1]}.${parts[0]}` : dateString;
+}
+
+form.addEventListener('reset', function () {
+    setTimeout(() => {
+        clearErrors();
+        resultContainer.innerHTML = '';
+        discountValue.textContent = discount.value + '%';
+    }, 0);
+});
+
+form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    clearErrors();
+
+    const productName = document.getElementById('productName').value.trim();
+    const category = document.getElementById('category').value;
+    const price = document.getElementById('price').value.trim();
+    const quantity = document.getElementById('quantity').value.trim();
+    const sku = document.getElementById('sku').value.trim();
+    const dateAdded = document.getElementById('dateAdded').value;
+    const description = document.getElementById('description').value.trim();
+    const brand = document.getElementById('brand').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const inStock = document.getElementById('inStock').checked;
+    const agreement = document.getElementById('agreement').checked;
+
+    let valid = true;
+
+    if (productName.length < 3) {
+        setError('productName', 'Введите название не короче 3 символов.');
+        valid = false;
+    }
+    if (!category) {
+        setError('category', 'Выберите категорию товара.');
+        valid = false;
+    }
+    if (price === '' || Number(price) <= 0) {
+        setError('price', 'Цена должна быть больше 0.');
+        valid = false;
+    }
+    if (!Number.isInteger(Number(quantity)) || Number(quantity) < 0) {
+        setError('quantity', 'Количество должно быть целым числом от 0 и больше.');
+        valid = false;
+    }
+    if (!/^[A-ZА-Я0-9-]{5,20}$/i.test(sku)) {
+        setError('sku', 'Артикул: 5–20 символов, буквы, цифры и дефис.');
+        valid = false;
+    }
+    if (!dateAdded) {
+        setError('dateAdded', 'Укажите дату добавления.');
+        valid = false;
+    }
+    if (description.length < 10) {
+        setError('description', 'Описание должно содержать не менее 10 символов.');
+        valid = false;
+    }
+    if (brand.length < 2) {
+        setError('brand', 'Введите название бренда.');
+        valid = false;
+    }
+    if (!validateEmail(email)) {
+        setError('email', 'Введите корректный email.');
+        valid = false;
+    }
+    if (!validatePhone(phone)) {
+        setError('phone', 'Введите корректный номер телефона.');
+        valid = false;
+    }
+    if (!agreement) {
+        setError('agreement', 'Необходимо подтвердить корректность данных.');
+        valid = false;
+    }
+
+    if (!valid) {
+        resultContainer.innerHTML = '';
+        return;
+    }
+
+    resultContainer.innerHTML = `
+        <div class="result-card">
+            <h3>Товар успешно добавлен в каталог</h3>
+            <div class="result-grid">
+                <div class="result-item"><strong>Название:</strong><br>${productName}</div>
+                <div class="result-item"><strong>Категория:</strong><br>${category}</div>
+                <div class="result-item"><strong>Цена:</strong><br>${Number(price).toLocaleString('ru-RU')} ₽</div>
+                <div class="result-item"><strong>Количество:</strong><br>${quantity} шт.</div>
+                <div class="result-item"><strong>Артикул:</strong><br>${sku}</div>
+                <div class="result-item"><strong>Дата добавления:</strong><br>${formatDate(dateAdded)}</div>
+                <div class="result-item"><strong>Бренд:</strong><br>${brand}</div>
+                <div class="result-item"><strong>Скидка:</strong><br>${discount.value}%</div>
+                <div class="result-item"><strong>Email менеджера:</strong><br>${email}</div>
+                <div class="result-item"><strong>Телефон:</strong><br>${phone}</div>
+                <div class="result-item"><strong>Статус:</strong><br>${inStock ? 'Доступен для продажи' : 'Пока не доступен'}</div>
+                <div class="result-item full"><strong>Описание:</strong><br>${description}</div>
+            </div>
+        </div>`;
+
+    form.reset();
+    discountValue.textContent = discount.value + '%';
+}
+);
+</script>
+</body>
+</html>
