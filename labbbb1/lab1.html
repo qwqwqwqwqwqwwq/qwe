@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Лабораторная работа 1">
+  <meta name="keywords" content="C#, язык программирования, .NET, лабораторная работа, web-разработка">
+  <title>Язык программирования C#</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main>
+  <header>
+    <h1>Язык программирования C#</h1>
+    <p class="subtitle">Лабораторная работа 1»</p>
+  </header>
+
+  <nav aria-label="Содержание">
+    <h2 class="nav-title">Содержание</h2>
+    <ul>
+      <li><a href="#history">История создания</a></li>
+      <li><a href="#overview">Краткий обзор языка</a></li>
+      <li><a href="#examples">Примеры кода</a></li>
+    </ul>
+  </nav>
+
+  <section id="history" class="panel clearfix">
+    <h2>История создания</h2>
+    <img src="pic1.svg" class="left" alt="История развития языка C#">
+    <p><strong>C#</strong> — современный объектно-ориентированный язык программирования, разработанный компанией Microsoft в конце 1990-х годов как часть платформы .NET. Руководителем команды разработки считается Андерс Хейлсберг, ранее участвовавший в создании Turbo Pascal и Delphi.</p>
+
+    <p>Официально язык был представлен в 2000 году. Его цель заключалась в том, чтобы объединить производительность компилируемых языков, удобство высокоуровневой разработки и тесную интеграцию с библиотеками платформы .NET.</p>
+
+    <p>С течением времени C# активно развивался: в нём появились обобщения, LINQ, асинхронное программирование, лямбда-выражения, pattern matching и другие возможности, которые сделали язык удобным как для корпоративных приложений, так и для разработки веб-сервисов, настольных программ и игр.</p>
+
+    <blockquote>
+      C# создавался как практичный язык для реальной разработки: строгий, читаемый и удобный для масштабных проектов.
+    </blockquote>
+
+    <p>Перейти к следующему разделу -- <a href="#overview">обзор языка C#</a>.</p>
+  </section>
+
+  <hr>
+
+  <section id="overview" class="panel clearfix">
+    <h2>Краткий обзор языка</h2>
+    <img src="pic2.svg" class="right" alt="Логотип и обзор языка C#">
+
+    <p><strong>C#</strong> — компилируемый язык со статической типизацией. Он используется вместе с платформой <em>.NET</em> и применяется в самых разных областях: backend-разработка, desktop-приложения, облачные сервисы, мобильные приложения и разработка игр на Unity.</p>
+
+    <p>Основные достоинства языка:</p>
+    <ul class="default">
+      <li>понятный и выразительный синтаксис;</li>
+      <li>поддержка объектно-ориентированного подхода;</li>
+      <li>богатая стандартная библиотека;</li>
+      <li>удобная работа с асинхронностью и многопоточностью.</li>
+    </ul>
+
+    <p>Популярные области применения C#:</p>
+    <ul class="icon">
+      <li>создание веб-приложений на ASP.NET Core;</li>
+      <li>разработка игр в Unity;</li>
+      <li>настольные программы для Windows;</li>
+      <li>корпоративные сервисы и API.</li>
+    </ul>
+
+    <table>
+      <caption>Основные характеристики языка C#</caption>
+      <thead>
+        <tr>
+          <th scope="col">Параметр</th>
+          <th scope="col">Описание</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Типизация</td>
+          <td>Статическая, строгая</td>
+        </tr>
+        <tr>
+          <td>Парадигмы</td>
+          <td>Объектно-ориентированная, обобщённая, функциональные элементы</td>
+        </tr>
+        <tr>
+          <td>Среда выполнения</td>
+          <td>.NET / CLR</td>
+        </tr>
+        <tr>
+          <td>Основные области применения</td>
+          <td>Web, desktop, cloud, Unity, корпоративные системы</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Ещё несколько сильных сторон языка:</p>
+    <ol>
+      <li>удобное чтение и сопровождение кода;</li>
+      <li>высокое качество инструментов разработки;</li>
+      <li>широкое сообщество и большое количество учебных материалов.</li>
+    </ol>
+
+    <p>Официальный сайт платформы: <a href="https://dotnet.microsoft.com/" target="_blank" class="external" rel="noopener noreferrer">dotnet.microsoft.com</a>.</p>
+  </section>
+
+  <hr>
+
+  <section id="examples" class="panel clearfix">
+    <h2>Примеры кода</h2>
+    <img src="pic3.svg" class="center" alt="Иллюстрация примеров кода на C#">
+
+    <p>Ниже показаны простые фрагменты кода на C#, которые демонстрируют базовый синтаксис языка, объявление классов, методов и использование асинхронных возможностей платформы.</p>
+
+    <article class="code-card">
+      <h3>Пример 1. Программа «Hello, World!»</h3>
+      <p>Это классический пример знакомства с языком. Программа выводит строку в консоль.</p>
+      <pre><code><span class="kw">using</span> System;
+
+<span class="kw">class</span> <span class="type">Program</span>
+{
+    <span class="kw">static</span> <span class="kw">void</span> <span class="fn">Main</span>()
+    {
+        Console.<span class="fn">WriteLine</span>(<span class="str">"Hello, C#!"</span>);
+    }
+}</code></pre>
+
+      <ul class="default">
+        <li>директива <strong>using</strong> подключает пространство имён;</li>
+        <li>метод <strong>Main</strong> является точкой входа в программу;</li>
+        <li>метод <strong>WriteLine</strong> выводит текст в консоль.</li>
+      </ul>
+    </article>
+
+    <article class="code-card">
+      <h3>Пример 2. Асинхронный метод</h3>
+      <p>В этом примере показано использование асинхронного программирования, которое очень важно для современных приложений и веб-сервисов.</p>
+      <pre><code><span class="kw">using</span> System;
+<span class="kw">using</span> System.Threading.Tasks;
+
+<span class="kw">class</span> <span class="type">Demo</span>
+{
+    <span class="kw">public</span> <span class="kw">static</span> <span class="kw">async</span> Task <span class="fn">LoadDataAsync</span>()
+    {
+        <span class="kw">await</span> Task.<span class="fn">Delay</span>(<span class="num">1000</span>);
+        Console.<span class="fn">WriteLine</span>(<span class="str">"Данные загружены"</span>);
+    }
+}</code></pre>
+
+      <p>Основные особенности фрагмента:</p>
+      <ol>
+        <li>используется ключевое слово <strong>async</strong>;</li>
+        <li>оператор <strong>await</strong> ожидает завершения задачи;</li>
+        <li>тип <strong>Task</strong> применяется для асинхронных операций.</li>
+      </ol>
+    </article>
+  </section>
+
+  <footer>
+    <p><strong>HTML-теги:</strong> html, head, meta, title, link, body, main, header, h1, p, nav, h2, ul, li, a, section, img, strong, blockquote, hr, em, table, caption, thead, tr, th, tbody, td, ol, article, h3, pre, code, span, footer.</p>
+    <p><strong>CSS-свойства:</strong> font-family, src, font-weight, font-style, font-display, box-sizing, scroll-behavior, line-height, background, color, margin, padding, max-width, border-radius, box-shadow, border, font-size, text-align, letter-spacing, text-transform, opacity, display, gap, justify-content, flex-wrap, text-decoration, transition, transform, width, float, overflow, clear, content, min-height, border-collapse, caption-side, vertical-align, list-style, background-image, background-repeat, background-position, padding-left, white-space, word-break.</p>
+  </footer>
+</main>
+</body>
+</html>

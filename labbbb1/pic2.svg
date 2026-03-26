@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="460" height="320" viewBox="0 0 460 320">
+<defs>
+  <linearGradient id="bg" x1="0" x2="1">
+    <stop offset="0%" stop-color="#181c2b"/>
+    <stop offset="100%" stop-color="#24173b"/>
+  </linearGradient>
+  <linearGradient id="hex" x1="0" x2="1">
+    <stop offset="0%" stop-color="#9333ea"/>
+    <stop offset="100%" stop-color="#6d28d9"/>
+  </linearGradient>
+</defs>
+<rect width="460" height="320" rx="22" fill="url(#bg)"/>
+<polygon points="170,55 290,55 350,160 290,265 170,265 110,160" fill="url(#hex)" stroke="#b794f6" stroke-width="4"/>
+<text x="196" y="182" fill="#ffffff" font-size="74" font-family="Arial" font-weight="700">C#</text>
+<text x="82" y="300" fill="#c9d2f2" font-size="24" font-family="Arial">.NET • ASP.NET • Unity • Desktop</text>
+</svg>

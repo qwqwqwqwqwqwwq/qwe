@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="340" viewBox="0 0 760 340">
+<defs>
+  <linearGradient id="bg" x1="0" x2="1">
+    <stop offset="0%" stop-color="#171a27"/>
+    <stop offset="100%" stop-color="#261c42"/>
+  </linearGradient>
+</defs>
+<rect width="760" height="340" rx="24" fill="url(#bg)"/>
+<rect x="42" y="38" width="676" height="264" rx="18" fill="#0f1320" stroke="#3b4463"/>
+<circle cx="84" cy="68" r="8" fill="#fb7185"/>
+<circle cx="110" cy="68" r="8" fill="#fbbf24"/>
+<circle cx="136" cy="68" r="8" fill="#4ade80"/>
+<text x="70" y="120" fill="#c084fc" font-size="28" font-family="Consolas" font-weight="700">using</text>
+<text x="165" y="120" fill="#d6d9e3" font-size="28" font-family="Consolas">System;</text>
+<text x="70" y="165" fill="#c084fc" font-size="28" font-family="Consolas" font-weight="700">class</text>
+<text x="160" y="165" fill="#7dd3fc" font-size="28" font-family="Consolas" font-weight="700">Program</text>
+<text x="70" y="210" fill="#d6d9e3" font-size="28" font-family="Consolas">{</text>
+<text x="95" y="210" fill="#c084fc" font-size="28" font-family="Consolas" font-weight="700">static</text>
+<text x="190" y="210" fill="#c084fc" font-size="28" font-family="Consolas" font-weight="700">void</text>
+<text x="260" y="210" fill="#4ade80" font-size="28" font-family="Consolas">Main()</text>
+<text x="70" y="255" fill="#d6d9e3" font-size="28" font-family="Consolas">    Console.</text>
+<text x="245" y="255" fill="#4ade80" font-size="28" font-family="Consolas">WriteLine</text>
+<text x="390" y="255" fill="#f9a8d4" font-size="28" font-family="Consolas">("Hello, C#!")</text>
+<text x="70" y="295" fill="#d6d9e3" font-size="28" font-family="Consolas">}</text>
+</svg>
