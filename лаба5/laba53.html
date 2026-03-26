@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>laba53 — Массив, часть Б</title>
+<style>
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 32px 12px;
+        font-family: Arial, sans-serif;
+        background: #f3f6fb;
+    }
+    .card {
+        width: min(94vw, 760px);
+        background: #fff;
+        border-radius: 16px;
+        padding: 28px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    h1 { margin-top: 0; text-align: center; color: #1f4f82; }
+    p { line-height: 1.55; color: #4e6479; }
+    label { display: block; font-weight: bold; margin: 14px 0 8px; }
+    input {
+        width: 100%;
+        padding: 12px 14px;
+        font-size: 16px;
+        border: 1px solid #ccdae8;
+        border-radius: 10px;
+    }
+    button {
+        width: 100%;
+        margin-top: 16px;
+        padding: 13px;
+        border: none;
+        border-radius: 10px;
+        background: #2f80ed;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    button:hover { background: #2268c8; }
+    .result {
+        margin-top: 18px;
+        background: #eef6ff;
+        border-radius: 10px;
+        padding: 16px;
+        line-height: 1.6;
+        white-space: pre-line;
+    }
+    code { background: #edf2f7; padding: 2px 6px; border-radius: 6px; }
+</style>
+</head>
+<body>
+    <div class="card">
+        <h1>Задание 2 — Часть Б</h1>
+        <p>
+            Удалить из массива все элементы, у которых модуль целой части является числом,
+            цифры которого образуют <strong>возрастающую геометрическую прогрессию</strong>.
+            Здесь используются методы объекта <code>Array</code>.
+        </p>
+        <label for="arrayInput">Введите массив чисел через пробел или запятую:</label>
+        <input id="arrayInput" type="text" placeholder="Например: 1248 2.5 -248 36 159 5 2480">
+        <button type="button" onclick="processArrayB()">Обработать массив</button>
+        <div class="result" id="result">Результат появится здесь.</div>
+    </div>
+
+<script>
+function isIncreasingGeometricDigits(value) {
+    const digits = Math.abs(Math.trunc(value)).toString().split('').map(Number);
+
+    if (digits.length < 3) {
+        return false;
+    }
+
+    if (digits[0] === 0) {
+        return false;
+    }
+
+    const ratio = digits[1] / digits[0];
+
+    if (!(ratio > 1)) {
+        return false;
+    }
+
+    for (let i = 1; i < digits.length; i++) {
+        if (!(digits[i] > digits[i - 1])) {
+            return false;
+        }
+    }
+
+    for (let i = 1; i < digits.length - 1; i++) {
+        if (digits[i] * ratio !== digits[i + 1]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function processArrayB() {
+    const raw = document.getElementById('arrayInput').value.trim();
+    const result = document.getElementById('result');
+
+    if (!raw) {
+        result.textContent = 'Ошибка: введите элементы массива.';
+        return;
+    }
+
+    const arr = raw
+        .replace(/,/g, ' ')
+        .split(/\s+/)
+        .map(item => Number(item));
+
+    if (arr.some(item => Number.isNaN(item))) {
+        result.textContent = 'Ошибка: массив должен содержать только числа.';
+        return;
+    }
+
+    const removed = arr.filter(item => isIncreasingGeometricDigits(item));
+    const filtered = arr.filter(item => !isIncreasingGeometricDigits(item));
+
+    result.textContent =
+        'Исходный массив: [' + arr.join(', ') + ']\n' +
+        'Удалённые элементы: [' + (removed.length ? removed.join(', ') : 'нет') + ']\n' +
+        'Итоговый массив: [' + filtered.join(', ') + ']';
+}
+</script>
+</body>
+</html>

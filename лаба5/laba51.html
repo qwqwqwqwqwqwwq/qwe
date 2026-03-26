@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>laba51 — Номер дня в году</title>
+<style>
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #eef5ff, #f8fbff);
+        color: #243447;
+    }
+    .card {
+        width: min(92vw, 520px);
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        padding: 28px;
+    }
+    h1 {
+        margin: 0 0 12px;
+        font-size: 28px;
+        text-align: center;
+        color: #1f4f82;
+    }
+    p {
+        margin: 0 0 18px;
+        line-height: 1.5;
+        text-align: center;
+        color: #4a6178;
+    }
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+    input {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid #c8d8ea;
+        border-radius: 10px;
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+    button {
+        width: 100%;
+        border: none;
+        border-radius: 10px;
+        padding: 13px;
+        font-size: 16px;
+        cursor: pointer;
+        background: #2f80ed;
+        color: #fff;
+        transition: transform 0.2s, background 0.2s;
+    }
+    button:hover {
+        background: #2268c8;
+        transform: translateY(-1px);
+    }
+    .result {
+        margin-top: 16px;
+        padding: 14px;
+        border-radius: 10px;
+        background: #eef6ff;
+        min-height: 54px;
+        line-height: 1.5;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+    <div class="card">
+        <h1>Задание 1</h1>
+        <p>Определение порядкового номера дня с начала года без использования объекта <code>Date</code>.</p>
+        <label for="dateInput">Введите дату в формате дд.мм.гггг:</label>
+        <input id="dateInput" type="text" placeholder="Например: 15.03.2024">
+        <button type="button" onclick="calculateDayNumber()">Вычислить</button>
+        <div class="result" id="result">Результат появится здесь.</div>
+    </div>
+
+<script>
+function isLeapYear(year) {
+    return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+}
+
+function calculateDayNumber() {
+    const input = document.getElementById('dateInput').value.trim();
+    const result = document.getElementById('result');
+    const parts = input.split('.');
+
+    if (parts.length !== 3) {
+        result.textContent = 'Ошибка: введите дату строго в формате дд.мм.гггг.';
+        return;
+    }
+
+    const day = Number(parts[0]);
+    const month = Number(parts[1]);
+    const year = Number(parts[2]);
+
+    if (!Number.isInteger(day) || !Number.isInteger(month) || !Number.isInteger(year)) {
+        result.textContent = 'Ошибка: дата должна содержать только целые числа.';
+        return;
+    }
+
+    if (year <= 0 || month < 1 || month > 12) {
+        result.textContent = 'Ошибка: проверьте месяц и год.';
+        return;
+    }
+
+    const monthDays = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+    if (day < 1 || day > monthDays[month - 1]) {
+        result.textContent = 'Ошибка: такого дня в указанном месяце не существует.';
+        return;
+    }
+
+    let number = day;
+    for (let i = 0; i < month - 1; i++) {
+        number += monthDays[i];
+    }
+
+    result.textContent = `Дата ${input} — это ${number}-й день года.`;
+}
+</script>
+</body>
+</html>

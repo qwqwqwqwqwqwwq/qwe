@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>laba52 — Массив, часть А</title>
+<style>
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 32px 12px;
+        font-family: Arial, sans-serif;
+        background: #f4f7fb;
+        color: #243447;
+    }
+    .card {
+        width: min(94vw, 700px);
+        background: #fff;
+        border-radius: 16px;
+        padding: 28px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    h1 { text-align: center; color: #1f4f82; margin-top: 0; }
+    p { line-height: 1.55; color: #4e6479; }
+    label { display: block; font-weight: bold; margin: 14px 0 8px; }
+    input {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid #cbd9e6;
+        border-radius: 10px;
+        font-size: 16px;
+    }
+    button {
+        margin-top: 16px;
+        width: 100%;
+        padding: 13px;
+        border: none;
+        border-radius: 10px;
+        background: #2f80ed;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    button:hover { background: #2268c8; }
+    .result {
+        margin-top: 18px;
+        background: #eef6ff;
+        border-radius: 10px;
+        padding: 16px;
+        line-height: 1.6;
+        white-space: pre-line;
+    }
+</style>
+</head>
+<body>
+    <div class="card">
+        <h1>Задание 2 — Часть А</h1>
+        <p>
+            Найти произведение элементов массива между первым и последним элементами,
+            для которых выполняется условие <strong>|x - e| ≤ 10<sup>-5</sup></strong>.
+            Решение выполнено без методов объекта <code>Array</code>.
+        </p>
+        <label for="arrayInput">Введите массив действительных чисел через пробел или запятую:</label>
+        <input id="arrayInput" type="text" placeholder="Например: 1 2.7182818 4 5 2.7182819 7">
+        <button type="button" onclick="processArrayA()">Вычислить</button>
+        <div class="result" id="result">Результат появится здесь.</div>
+    </div>
+
+<script>
+function processArrayA() {
+    const raw = document.getElementById('arrayInput').value.trim();
+    const result = document.getElementById('result');
+
+    if (raw === '') {
+        result.textContent = 'Ошибка: введите элементы массива.';
+        return;
+    }
+
+    const normalized = raw.replace(/,/g, ' ');
+    const pieces = normalized.split(/\s+/);
+    const arr = [];
+
+    for (let i = 0; i < pieces.length; i++) {
+        const num = Number(pieces[i]);
+        if (Number.isNaN(num)) {
+            result.textContent = 'Ошибка: массив должен содержать только числа.';
+            return;
+        }
+        arr[arr.length] = num;
+    }
+
+    const e = Math.E;
+    const eps = 1e-5;
+    let first = -1;
+    let last = -1;
+
+    for (let i = 0; i < arr.length; i++) {
+        if (Math.abs(arr[i] - e) <= eps) {
+            if (first === -1) {
+                first = i;
+            }
+            last = i;
+        }
+    }
+
+    if (first === -1 || first === last) {
+        result.textContent = 'Недостаточно элементов, близких к e. Нужно минимум два таких элемента.';
+        return;
+    }
+
+    let product = 1;
+    for (let i = first + 1; i < last; i++) {
+        product *= arr[i];
+    }
+
+    result.textContent =
+        'Массив: [' + arr.join(', ') + ']\n' +
+        'Первый подходящий индекс: ' + first + '\n' +
+        'Последний подходящий индекс: ' + last + '\n' +
+        'Произведение элементов между ними: ' + product;
+}
+</script>
+</body>
+</html>
